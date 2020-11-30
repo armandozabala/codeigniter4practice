@@ -43,6 +43,7 @@ $routes->post('tareas', 'Home::getTareas');
 $routes->post('tareaseliminadas', 'Home::getTareasEliminadas');
 //delete
 $routes->post('eliminar', 'Home::eliminar');
+//update
 
 $routes->post('saludo', 'Home::saludo');
 $routes->get('saludo', 'Home::saludo');
