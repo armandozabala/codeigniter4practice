@@ -44,6 +44,14 @@ $routes->post('tareaseliminadas', 'Home::getTareasEliminadas');
 //delete
 $routes->post('eliminar', 'Home::eliminar');
 //update
+$routes->post('editar', 'Home::editar');
+//buscar
+$routes->post('buscar', 'Home::buscar');
+
+
+$routes->post('titulos', 'Home::tareasTitulo');
+
+
 
 $routes->post('saludo', 'Home::saludo');
 $routes->get('saludo', 'Home::saludo');

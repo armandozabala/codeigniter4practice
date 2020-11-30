@@ -8,6 +8,16 @@ use App\Models\TareaModel;
 
 class Home extends BaseController
 {
+
+	protected $request;
+	protected $model;
+
+	public function __construct(){
+
+					$this->request = \Config\Services::request();
+					$this->model  = new TareaModel();
+	}
+
 	public function index()
 	{
 		return view('welcome_message');
@@ -22,9 +32,8 @@ class Home extends BaseController
 	public function saludo(){
 
 		 //para trabajar con peticiones
-			$request = \Config\Services::request();
 
-			$saludo = $request->getPost('saludos');
+			$saludo = $this->request->getPost('saludos');
 
 			echo 'Hola '.$saludo;
 
@@ -33,17 +42,16 @@ class Home extends BaseController
 	public function sumar(){
 
 				 //para trabajar con peticiones
-					$request = \Config\Services::request();
 
 					//from body
-				/*	$obj = $request->getBody();
+				/*	$obj = $this->request->getBody();
 
 					$ok = json_decode($obj);
 
 					echo $ok;*/
 					
-					$n1 = $request->getPost('n1');
-					$n2 = $request->getPost('n2');
+					$n1 = $this->request->getPost('n1');
+					$n2 = $this->request->getPost('n2');
 					
 					if(is_numeric($n1) && is_numeric($n2)){
 									$suma = intval($n1) + intval($n2);
@@ -60,16 +68,14 @@ class Home extends BaseController
 		//INSERT
 		public function insertar(){
 
-					$model  = new TareaModel();
-
-					$request = \Config\Services::request();
+			
 
 					$data = [
-							'titulo' => $request->getPost('titulo'),
-							'descripcion' =>  $request->getPost('descripcion')
+							'titulo' => $this->request->getPost('titulo'),
+							'descripcion' =>  $this->request->getPost('descripcion')
 					];
 
-					$model->insert($data);
+					$this->model->insert($data);
 
 					echo json_encode(["msg" => "creado"]);
 
@@ -77,33 +83,67 @@ class Home extends BaseController
 
 		public function getTareas(){
 
-				$model  = new TareaModel();
 
-				echo json_encode($model->findAll());
+				echo json_encode($this->model->findAll());
 
 		}
 
 
 		public function getTareasEliminadas(){
 
-			$model  = new TareaModel();
 
-			echo json_encode($model->onlyDeleted()->findAll());
+			echo json_encode($this->model->onlyDeleted()->findAll());
 
 	}
 
 
 		public function eliminar(){
 
-					$model  = new TareaModel();
 
-					$request = \Config\Services::request();
+					$id = $this->request->getPost('id');
 
-					$id = $request->getPost('id');
-
-					$res = $model->delete($id);
+					$res = $this->model->delete($id);
 
 					echo json_encode(["msg" => "borrado ".$res]);
+
+		}
+
+		public function editar(){
+
+
+					$id = $this->request->getPost('id');
+
+					$data = [
+						'titulo' => $this->request->getPost('titulo'),
+						'descripcion' =>  $this->request->getPost('descripcion')
+					];
+
+					$res = $this->model->update($id, $data);
+
+					echo json_encode(["msg" => "Editado ".$res]);
+
+
+		}
+
+
+		public function buscar(){
+
+
+			$id = $this->request->getPost('id');
+
+			echo json_encode($this->model->find($id));
+
+
+		}
+
+
+		public function tareasTitulo(){
+					$db = \Config\Database::connect();
+					$builder = $db->table('tareas');
+					$builder->select("titulo");
+					$query = $builder->get();
+
+					echo json_encode($query->getResult());
 
 		}
 
