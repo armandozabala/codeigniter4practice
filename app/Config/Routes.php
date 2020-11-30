@@ -34,6 +34,16 @@ $routes->get('/', 'Home::index');
 $routes->get('hello', 'Home::hello');
 
 
+$routes->post('sumar', 'Home::sumar');
+
+//insertar
+$routes->post('insertar', 'Home::insertar');
+//get
+$routes->post('tareas', 'Home::getTareas');
+$routes->post('tareaseliminadas', 'Home::getTareasEliminadas');
+//delete
+$routes->post('eliminar', 'Home::eliminar');
+
 $routes->post('saludo', 'Home::saludo');
 $routes->get('saludo', 'Home::saludo');
 
