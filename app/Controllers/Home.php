@@ -6,15 +6,14 @@ namespace App\Controllers;
 use App\Models\TareaModel;
 
 
-class Home extends BaseController
+class Home extends Auth
 {
 
-	protected $request;
+
 	protected $model;
 
 	public function __construct(){
 
-					$this->request = \Config\Services::request();
 					$this->model  = new TareaModel();
 	}
 
@@ -68,23 +67,26 @@ class Home extends BaseController
 		//INSERT
 		public function insertar(){
 
+
+								$data = [
+									'titulo' => $this->request->getPost('titulo'),
+									'descripcion' =>  $this->request->getPost('descripcion')
+							];
+
+							$this->model->insert($data);
+
+							//echo json_encode(["msg" => "creado"]);
+							return $this->respond(['data' => 'creado'], 200);
+
 			
-
-					$data = [
-							'titulo' => $this->request->getPost('titulo'),
-							'descripcion' =>  $this->request->getPost('descripcion')
-					];
-
-					$this->model->insert($data);
-
-					echo json_encode(["msg" => "creado"]);
 
 		}
 
 		public function getTareas(){
 
+			
+						return $this->respond($this->model->findAll());
 
-				echo json_encode($this->model->findAll());
 
 		}
 
@@ -92,24 +94,49 @@ class Home extends BaseController
 		public function getTareasEliminadas(){
 
 
-			echo json_encode($this->model->onlyDeleted()->findAll());
+			$token =  $this->request->getHeader('Authorization') != null ?  $this->request->getHeader('Authorization')->getValue() : "";
+
+			if($this->validateToken($token) == true){
+
+						return $this->respond($this->model->onlyDeleted()->findAll());
+
+			}
+			else{
+
+						return $this->respond(['message' => 'Token invalido'], 401);
+			}
 
 	}
 
 
 		public function eliminar(){
 
+			$token =  $this->request->getHeader('Authorization') != null ?  $this->request->getHeader('Authorization')->getValue() : "";
+
+			if($this->validateToken($token) == true){
 
 					$id = $this->request->getPost('id');
 
 					$res = $this->model->delete($id);
 
-					echo json_encode(["msg" => "borrado ".$res]);
+					//echo json_encode(["msg" => "borrado ".$res]);
+
+					return $this->respond(['message' => 'Borrado'], 200);
+
+			}else{
+			
+			  	return $this->respond(['message' => 'Token invalido'], 401);
+				   
+			}
 
 		}
 
 		public function editar(){
 
+
+			$token =  $this->request->getHeader('Authorization') != null ?  $this->request->getHeader('Authorization')->getValue() : "";
+
+			if($this->validateToken($token) == true){
 
 					$id = $this->request->getPost('id');
 
@@ -120,20 +147,36 @@ class Home extends BaseController
 
 					$res = $this->model->update($id, $data);
 
-					echo json_encode(["msg" => "Editado ".$res]);
+					//echo json_encode(["msg" => "Editado ".$res]);
 
+					return $this->respond(['message' => 'Editado'], 200);
+				}
+				else{
+
+			  		return $this->respond(['message' => 'Token invalido'], 401);
+				}
 
 		}
 
 
 		public function buscar(){
 
+			
+			$token =  $this->request->getHeader('Authorization') != null ?  $this->request->getHeader('Authorization')->getValue() : "";
 
-			$id = $this->request->getPost('id');
-
-			echo json_encode($this->model->find($id));
+			if($this->validateToken($token) == true){
 
 
+							$id = $this->request->getPost('id');
+
+							//echo json_encode($this->model->find($id));
+
+							return $this->respond(['data' => $this->model->find($id)], 200);
+
+			}else{
+
+						return $this->respond(['message' => 'Token invalido'], 401);
+			}
 		}
 
 

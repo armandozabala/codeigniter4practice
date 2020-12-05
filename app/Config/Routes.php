@@ -37,24 +37,30 @@ $routes->get('hello', 'Home::hello');
 $routes->post('sumar', 'Home::sumar');
 
 //insertar
-$routes->post('insertar', 'Home::insertar');
+$routes->post('insertar', 'Home::insertar',  ['filter' => 'authFilter']);
 //get
-$routes->post('tareas', 'Home::getTareas');
-$routes->post('tareaseliminadas', 'Home::getTareasEliminadas');
+$routes->post('tareas', 'Home::getTareas',  ['filter' => 'authFilter']);
+
+$routes->post('tareaseliminadas', 'Home::getTareasEliminadas',  ['filter' => 'authFilter']);
 //delete
-$routes->post('eliminar', 'Home::eliminar');
+$routes->post('eliminar', 'Home::eliminar',  ['filter' => 'authFilter']);
 //update
-$routes->post('editar', 'Home::editar');
+$routes->post('editar', 'Home::editar',  ['filter' => 'authFilter']);
 //buscar
-$routes->post('buscar', 'Home::buscar');
+$routes->post('buscar', 'Home::buscar',  ['filter' => 'authFilter']);
 
 
-$routes->post('titulos', 'Home::tareasTitulo');
+$routes->post('titulos', 'Home::tareasTitulo' ,  ['filter' => 'authFilter']);
 
 
 
 $routes->post('saludo', 'Home::saludo');
 $routes->get('saludo', 'Home::saludo');
+
+//JWT
+$routes->resource('api/auth', ['controller' => 'Auth']);
+$routes->resource('api/home', ['controller' => 'Home']);
+$routes->resource('api/user', ['controller' => 'User']);
 
 /**
  * --------------------------------------------------------------------
