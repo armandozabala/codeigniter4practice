@@ -6,14 +6,15 @@ namespace App\Controllers;
 use App\Models\TareaModel;
 
 
+
 class Home extends Auth
 {
 
 
 	protected $model;
 
-	public function __construct(){
 
+	public function __construct(){
 					$this->model  = new TareaModel();
 	}
 
@@ -67,16 +68,8 @@ class Home extends Auth
 		//INSERT
 		public function insertar(){
 
+			return $this->respond(['data' => 'creado'], 200);
 
-								$data = [
-									'titulo' => $this->request->getPost('titulo'),
-									'descripcion' =>  $this->request->getPost('descripcion')
-							];
-
-							$this->model->insert($data);
-
-							//echo json_encode(["msg" => "creado"]);
-							return $this->respond(['data' => 'creado'], 200);
 
 			
 
@@ -189,6 +182,39 @@ class Home extends Auth
 					echo json_encode($query->getResult());
 
 		}
+
+
+		public function subida()
+		{
+
+								$img = $this->request->getFile('filesito');
+								
+								
+								$img->move(WRITEPATH.'/uploads');
+
+
+									return $this->respond(['message' =>  ['name'=> $img->getName(), 'size' => $img->getSize(), 'ext'=> $img->getExtension() ]], 200);
+										/*$validacion = $this->validate([
+											   'tienda_logo' => [
+																				'uploaded[tienda_logo]',
+																				'mime_in[tienda_logo,image/png]',
+																				'max_size[tienda_log,4096]'
+														]
+										]);
+
+										if($validacion){
+											$img = $this->request->getFile('userfile');
+											$img->move('./uploads','name.png');
+												return $this->respond(['message' => $img], 200);
+										}
+										else{
+													return $this->respond(['message' => 'error img invalido'], 401);
+										}*/
+
+
+		}
+
+
 
 
 

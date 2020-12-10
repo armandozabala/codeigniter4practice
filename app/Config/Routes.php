@@ -37,20 +37,26 @@ $routes->get('hello', 'Home::hello');
 $routes->post('sumar', 'Home::sumar');
 
 //insertar
-$routes->post('insertar', 'Home::insertar',  ['filter' => 'authFilter']);
+$routes->post('insertar', 'Home::insertar');
 //get
-$routes->post('tareas', 'Home::getTareas',  ['filter' => 'authFilter']);
+$routes->post('tareas', 'Home::getTareas');
 
-$routes->post('tareaseliminadas', 'Home::getTareasEliminadas',  ['filter' => 'authFilter']);
+$routes->post('tareaseliminadas', 'Home::getTareasEliminadas');
 //delete
-$routes->post('eliminar', 'Home::eliminar',  ['filter' => 'authFilter']);
+$routes->post('eliminar', 'Home::eliminar');
 //update
-$routes->post('editar', 'Home::editar',  ['filter' => 'authFilter']);
+$routes->post('editar', 'Home::editar');
 //buscar
-$routes->post('buscar', 'Home::buscar',  ['filter' => 'authFilter']);
+$routes->post('buscar', 'Home::buscar');
 
 
-$routes->post('titulos', 'Home::tareasTitulo' ,  ['filter' => 'authFilter']);
+$routes->post('titulos', 'Home::tareasTitulo');
+
+
+
+//excel
+$routes->post('subir', 'Excel::uploadExcel');
+$routes->get('downloadexcel', 'Excel::exportarExcel');
 
 
 
@@ -60,6 +66,7 @@ $routes->get('saludo', 'Home::saludo');
 //JWT
 $routes->resource('api/auth', ['controller' => 'Auth']);
 $routes->resource('api/home', ['controller' => 'Home']);
+$routes->resource('api/excel', ['controller' => 'Excel']);
 $routes->resource('api/user', ['controller' => 'User']);
 
 /**
