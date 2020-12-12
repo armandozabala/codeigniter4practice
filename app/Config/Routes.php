@@ -38,8 +38,7 @@ $routes->post('sumar', 'Home::sumar');
 
 //insertar
 $routes->post('insertar', 'Home::insertar');
-//get
-$routes->post('tareas', 'Home::getTareas');
+
 
 $routes->post('tareaseliminadas', 'Home::getTareasEliminadas');
 //delete
@@ -53,20 +52,39 @@ $routes->post('buscar', 'Home::buscar');
 $routes->post('titulos', 'Home::tareasTitulo');
 
 
-
 //excel
 $routes->post('subir', 'Excel::uploadExcel');
+
 $routes->get('downloadexcel', 'Excel::exportarExcel');
+
 
 
 
 $routes->post('saludo', 'Home::saludo');
 $routes->get('saludo', 'Home::saludo');
 
+
+//insertar usuario
+$routes->post('usuario', 'User::insertar');
+$routes->post('login', 'User::login');
+
+$routes->post('updateorden', 'User::updateOrden');
+$routes->post('clientesxrutas', 'User::getClientesRutas');
+
+
+//rutas
+$routes->get('rutas', 'Rutas::getRutas');
+
+$routes->post('auth', 'Auth::create');
+
+
+
+
 //JWT
 $routes->resource('api/auth', ['controller' => 'Auth']);
 $routes->resource('api/home', ['controller' => 'Home']);
 $routes->resource('api/excel', ['controller' => 'Excel']);
+$routes->resource('api/rutas', ['controller' => 'Rutas']);
 $routes->resource('api/user', ['controller' => 'User']);
 
 /**

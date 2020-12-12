@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 //lamar modelo
 use App\Models\TareaModel;
+use App\Models\ClienteModel;
 
 
 
@@ -12,10 +13,13 @@ class Home extends Auth
 
 
 	protected $model;
+	protected $cliente;
 
 
 	public function __construct(){
 					$this->model  = new TareaModel();
+					$this->cliente  = new ClienteModel();
+					
 	}
 
 	public function index()
@@ -75,10 +79,10 @@ class Home extends Auth
 
 		}
 
-		public function getTareas(){
+		public function getClientes(){
 
 			
-						return $this->respond($this->model->findAll());
+						return $this->respond($this->cliente->findAll());
 
 
 		}

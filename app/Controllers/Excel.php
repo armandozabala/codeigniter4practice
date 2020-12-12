@@ -5,52 +5,64 @@ use CodeIgniter\RESTful\ResourceController;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Alignment as alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border as border;
+use PhpOffice\PhpSpreadsheet\Style\Fill as fill; // Instead PHPExcel_Style_Fill
 
 //lamar modelo
 use App\Models\ClienteModel;
+use App\Models\RutaModel;
 
 
 class Excel extends ResourceController
 { 
 
  protected $excel;
- protected $model;
+ protected $cliente;
+ protected $ruta;
 
 	public function __construct(){
 
-    $this->model  = new ClienteModel();
+    header('Access-Control-Allow-Origin: *');
+		header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization");
+		header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");  
+    $this->cliente  = new ClienteModel();
+    $this->ruta = new RutaModel();
     $this->excel = new Spreadsheet();
 
 }
 
 
-public function getCoord(){
 
-     echo "Ok";
 
-}
+/** $address */
+public function geocodeAddress($address) {
 
-public function getCoordinatesFromApi($address) {
+   $api_key='AIzaSyDw5Hm1y6CwPFFlDjT3aXXEdai9eTdFdXA';
+   $address = urlencode($address.", Colombia");//urlencode($address);
 
-   $key='AIzaSyDw5Hm1y6CwPFFlDjT3aXXEdai9eTdFdXA';
-   $address = urlencode($address);
+   $json = file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?address=".$address."&key=".$api_key."");
 
-   $url = $http.get('https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.$key);
+   $obj = json_decode($json);
 
-   $resp_json = file_get_contents($url);
-   $resp = json_decode($resp_json, true);
 
-   if ($resp['status'] == 'OK') {
-    // get the important data
-    $lati  = $resp['results'][0]['geometry']['location']['lat'];
-    $longi = $resp['results'][0]['geometry']['location']['lng'];
-    
-    print_r($lati);
-    //echo $longi;
+   if ($obj->status == "OK") {
 
-  } else {
-    return false;
-  }
+
+     return $coord = [
+           "lat" => $obj->results[0]->geometry->location->lat,
+           "lng" => $obj->results[0]->geometry->location->lng
+      ];
+
+
+   }else{
+
+      return $coord = [
+             "lat" => 0,
+             "lng" => 0
+      ];
+   }
+
 
 }
 
@@ -60,27 +72,101 @@ public function exportarExcel(){
   $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
   $filename="nombrssse.xlsx";
   $writer = new Xlsx($spreadsheet);
-  $sheet = $spreadsheet->getActiveSheet();
-  //name the worksheet
-  $sheet->setTitle('Informe');
+  $sheet = $spreadsheet->setActiveSheetIndex(0);
+
   //set cell A1 content with some text
-  $sheet->setCellValue('A1','Celda1');
 
+      $sheet->setCellValue('A1', 'Id');
+      $sheet->setCellValue('B1', 'Marca');
+      $sheet->setCellValue('C1', 'Modelo');
+      $sheet->setCellValue('D1', 'Placa');
+      $sheet->setCellValue('E1', 'Ruta');
+      $sheet->setCellValue('F1', 'Conductor');
+
+      //loop
+      for($row=2; $row < 10; ++$row){
+
+          $sheet->setCellValue('A'.$row, 1);
+
+          $sheet->setCellValue('B'.$row, 'Marca');
   
-     //save our workbook as this file name
+          $sheet->setCellValue('C'.$row, 'Modelo');
+  
+          $sheet->setCellValue('D'.$row, 'XXX123');
+  
+          $sheet->setCellValue('E'.$row, 'LIBRADA');
+  
+          $sheet->setCellValue('F'.$row, 'PEPITO PEREZ');
 
+      }
+
+
+      $sheet->getColumnDimension('A')->setWidth(10);
+      $sheet->getColumnDimension('B')->setWidth(20);
+      $sheet->getColumnDimension('C')->setWidth(13);
+      $sheet->getColumnDimension('D')->setWidth(25);
+      $sheet->getColumnDimension('E')->setWidth(19);
+      $sheet->getColumnDimension('F')->setWidth(30);
+
+      //name the worksheet
+      $sheet->setTitle('Informe');
+
+      $sheet->getStyle('A1:F1')->applyFromArray(
+
+        array(
+
+            'font'    => array(
+
+                'bold'      => true,
+                //'color' => array('argb' => 'FFFF0000'),
+
+
+            ),
+
+            'alignment' => array(
+
+                'horizontal' => alignment::HORIZONTAL_CENTER,
+
+            ),
+            
+            'borders' => array(
+
+              'top'     => array(
+
+                'borderStyle' => Border::BORDER_THICK,
+                'color' => array('argb' => 'FFFF0000'),
+
+              ),
+
+              'bottom'     => array(
+
+                  'borderStyle' => border::BORDER_DASHDOT
+
+              )
+
+          ),
+          'fill' => array(
+            'fillType' => Fill::FILL_SOLID,
+            'startColor' => array('argb' => 'FF4F81BD')
+          )
+
+
+        )
+
+        );
+
+     //save our workbook as this file name
      $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, "Xlsx");
   
-   
      $writer->save(WRITEPATH.'/uploads/'.$filename);
 
      header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
      header('Content-Disposition: attachment; filename='.$filename);
-     ob_end_clean(); $writer->save("php://output"); exit();
+     ob_end_clean();
+     $writer->save("php://output"); 
+     exit();
      
-     /*if(file_exists($filename)){
-      echo json_encode(array('error'=>false, 'export_path'=> WRITEPATH.'/uploads/' . $filename)); //my angular project is at D:\wamp64\www\angular6-app\client\
-     }*/
+
 
 }
 
@@ -91,9 +177,6 @@ public function uploadExcel(){
 
  $archivo->move(WRITEPATH.'/uploads/excel');
  
-//$reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile(WRITEPATH.'/uploads/excel/'.$archivo->getName());
-
-
 $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
 
 $reader->setReadDataOnly(false);
@@ -117,6 +200,7 @@ foreach ( $spreadsheet->getWorksheetIterator() as $worksheet) {
  $nrColumns = ord($highestColumn) - 64;
 
  $arr_final = array();
+ $arr_agregados = array();
 
  for ($row = 2; $row <= $highestRow; ++$row) {
 
@@ -127,44 +211,64 @@ foreach ( $spreadsheet->getWorksheetIterator() as $worksheet) {
     for ($col = 2; $col <= $highestColumnIndex; ++$col) {
 
            $cell = $worksheet->getCellByColumnAndRow($col, $row)->getFormattedValue();
-           //$val = $cell->getCalculatedValue();
+
            array_push($arr, $cell);
    
          
            
     }
 
-      $data_cell =[
-                  'razon_social' => $arr[0],
-                  'nit' => $arr[1],
-                  'id_cliente' => $arr[2],
-                  'nombres' => $arr[3],
-                  'apellidos' => $arr[4],
-                  'cedula' => $arr[5],
-                  'direccion' => $arr[6],
-                  'telefono' => $arr[7],
-                  'email' => $arr[8],
-                  'latitud' => $arr[9],
-                  'longitud' => $arr[10],
-                  'hora_desde' => $arr[11],
-                  'hora_hasta' => $arr[12],
-                  'id_ciudad' => $arr[13],
-                  'id_departamento' => $arr[14],
-                  'ruta' => $arr[15],
-                  'orden' => $arr[16]
-      ];
+    
 
-      array_push($arr_final, $data_cell);
- 
-     
+     $resp = $this->cliente->where('id_cliente',$arr[2])->findAll();
+
+    
+     if(count($resp) ==  0){
+
+              $resp_coord = $this->geocodeAddress($arr[6]);
+
+              $data_cell =[
+                'razon_social' => $arr[0],
+                'nit' => $arr[1],
+                'id_cliente' => $arr[2],
+                'nombres' => $arr[3],
+                'apellidos' => $arr[4],
+                'cedula' => $arr[5],
+                'direccion' => $arr[6],
+                'telefono' => $arr[7],
+                'email' => $arr[8],
+                'latitud' => $resp_coord['lat'], //$arr[9],
+                'longitud' => $resp_coord['lng'], // $arr[10],
+                'hora_desde' => $arr[11],
+                'hora_hasta' => $arr[12],
+                'id_ciudad' => $arr[13],
+                'id_departamento' => $arr[14],
+                'ruta' => $arr[15],
+                'orden' => $arr[16]
+               ];
+
+            array_push($arr_final, $data_cell);
+
+     }else{
+
+         $datadd = [
+            'id_cliente' => $arr[2]
+         ];
+
+         array_push($arr_agregados, $datadd);
+     }
+   
+
 
   }
 
+  $res = 0;
 
-  $res = $this->model->insertBatch($arr_final);
+  if(count($arr_final) > 0)
+      $res = $this->cliente->insertBatch($arr_final);
 
   if( $res == count($arr_final)){
-    return $this->respond(['data' => 'creado batch cliente '.count($arr_final)." clientes registrados "], 200);
+    return $this->respond(['nuevos' => (object) $arr_final, 'registros' => count($arr_agregados)], 200);
   }else{
     return $this->respond(['message' => 'Error in batch invalido'], 401);
   }
@@ -185,6 +289,8 @@ foreach ( $spreadsheet->getWorksheetIterator() as $worksheet) {
   header('Content-Type: application/vnd.ms-excel'); //mime type
   header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
   header('Cache-Control: max-age=0'); //no cache*/
+
+
 
  }
 
