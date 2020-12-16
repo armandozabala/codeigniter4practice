@@ -54,8 +54,7 @@ $routes->post('titulos', 'Home::tareasTitulo');
 
 //excel
 $routes->post('subir', 'Excel::uploadExcel');
-
-$routes->get('downloadexcel', 'Excel::exportarExcel');
+$routes->post('downloadexcel', 'Excel::exportarExcel');
 
 
 

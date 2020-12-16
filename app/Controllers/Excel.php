@@ -72,49 +72,64 @@ public function geocodeAddress($address) {
 
 public function exportarExcel(){
 
+  $obj=json_decode(file_get_contents('php://input'));
+  $datos = $obj->row;
+
   $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
-  $filename="nombrssse.xlsx";
+  $filename="nombre.xlsx";
   $writer = new Xlsx($spreadsheet);
   $sheet = $spreadsheet->setActiveSheetIndex(0);
 
   //set cell A1 content with some text
 
       $sheet->setCellValue('A1', 'Id');
-      $sheet->setCellValue('B1', 'Marca');
-      $sheet->setCellValue('C1', 'Modelo');
-      $sheet->setCellValue('D1', 'Placa');
-      $sheet->setCellValue('E1', 'Ruta');
-      $sheet->setCellValue('F1', 'Conductor');
+      $sheet->setCellValue('B1', 'Razon Social');
+      $sheet->setCellValue('C1', 'Nombres');
+      $sheet->setCellValue('D1', 'Apellidos');
+      $sheet->setCellValue('E1', 'Email');
+      $sheet->setCellValue('F1', 'Telefono');
+      $sheet->setCellValue('G1', 'Direccion');
+      $sheet->setCellValue('H1', 'Ruta');
+      $sheet->setCellValue('I1', 'Orden');
 
       //loop
-      for($row=2; $row < 10; ++$row){
+      for($row=2; $row < count($datos) + 2; ++$row){
 
-          $sheet->setCellValue('A'.$row, 1);
+          $sheet->setCellValue('A'.$row, $datos[$row-2]->id_cliente);
 
-          $sheet->setCellValue('B'.$row, 'Marca');
+          $sheet->setCellValue('B'.$row, $datos[$row-2]->razon_social);
   
-          $sheet->setCellValue('C'.$row, 'Modelo');
+          $sheet->setCellValue('C'.$row, $datos[$row-2]->nombres);
   
-          $sheet->setCellValue('D'.$row, 'XXX123');
+          $sheet->setCellValue('D'.$row, $datos[$row-2]->apellidos);
   
-          $sheet->setCellValue('E'.$row, 'LIBRADA');
+          $sheet->setCellValue('E'.$row, $datos[$row-2]->email);
   
-          $sheet->setCellValue('F'.$row, 'PEPITO PEREZ');
+          $sheet->setCellValue('F'.$row, $datos[$row-2]->telefono);
+
+          $sheet->setCellValue('G'.$row, $datos[$row-2]->direccion);
+
+          $sheet->setCellValue('H'.$row, $datos[$row-2]->ruta);
+
+          $sheet->setCellValue('I'.$row, $datos[$row-2]->orden);
 
       }
 
 
       $sheet->getColumnDimension('A')->setWidth(10);
-      $sheet->getColumnDimension('B')->setWidth(20);
-      $sheet->getColumnDimension('C')->setWidth(13);
-      $sheet->getColumnDimension('D')->setWidth(25);
-      $sheet->getColumnDimension('E')->setWidth(19);
-      $sheet->getColumnDimension('F')->setWidth(30);
+      $sheet->getColumnDimension('B')->setWidth(25);
+      $sheet->getColumnDimension('C')->setWidth(15);
+      $sheet->getColumnDimension('D')->setWidth(15);
+      $sheet->getColumnDimension('E')->setWidth(23);
+      $sheet->getColumnDimension('F')->setWidth(15);
+      $sheet->getColumnDimension('G')->setWidth(30);
+      $sheet->getColumnDimension('H')->setWidth(20);
+      $sheet->getColumnDimension('I')->setWidth(20);
 
       //name the worksheet
-      $sheet->setTitle('Informe');
+      $sheet->setTitle('Informe Ordenes');
 
-      $sheet->getStyle('A1:F1')->applyFromArray(
+      $sheet->getStyle('A1:I1')->applyFromArray(
 
         array(
 
@@ -168,7 +183,7 @@ public function exportarExcel(){
      ob_end_clean();
      $writer->save("php://output"); 
      exit();
-     
+    
 
 
 }
