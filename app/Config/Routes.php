@@ -69,14 +69,19 @@ $routes->post('usuario', 'User::insertar');
 $routes->post('login', 'User::login');
 
 $routes->post('updateorden', 'User::updateOrden');
+$routes->post('updateruta', 'User::updateRuta');
 $routes->post('clientesxrutas', 'User::getClientesRutas');
+$routes->post('customersnoroutes', 'User::getClientesNoRuta');
 
 
 //rutas
 $routes->get('rutas', 'Rutas::getRutas');
-
 $routes->post('auth', 'Auth::create');
 
+
+
+//ordenes
+$routes->post('ordenestoday', 'Orden::getOrdenesToday');
 
 
 
@@ -86,6 +91,7 @@ $routes->resource('api/home', ['controller' => 'Home']);
 $routes->resource('api/excel', ['controller' => 'Excel']);
 $routes->resource('api/rutas', ['controller' => 'Rutas']);
 $routes->resource('api/user', ['controller' => 'User']);
+$routes->resource('api/orden', ['controller' => 'Orden']);
 
 /**
  * --------------------------------------------------------------------

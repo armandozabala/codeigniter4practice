@@ -12,6 +12,7 @@ use PhpOffice\PhpSpreadsheet\Style\Fill as fill; // Instead PHPExcel_Style_Fill
 //lamar modelo
 use App\Models\ClienteModel;
 use App\Models\RutaModel;
+use App\Models\OrdenModel;
 
 
 class Excel extends ResourceController
@@ -20,6 +21,7 @@ class Excel extends ResourceController
  protected $excel;
  protected $cliente;
  protected $ruta;
+ protected $orden;
 
 	public function __construct(){
 
@@ -28,6 +30,7 @@ class Excel extends ResourceController
 		header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");  
     $this->cliente  = new ClienteModel();
     $this->ruta = new RutaModel();
+    $this->orden = new OrdenModel();
     $this->excel = new Spreadsheet();
 
 }
@@ -243,8 +246,7 @@ foreach ( $spreadsheet->getWorksheetIterator() as $worksheet) {
                 'hora_hasta' => $arr[12],
                 'id_ciudad' => $arr[13],
                 'id_departamento' => $arr[14],
-                'ruta' => $arr[15],
-                'orden' => $arr[16]
+                'ruta' => $arr[15]
                ];
 
             array_push($arr_final, $data_cell);
@@ -255,7 +257,23 @@ foreach ( $spreadsheet->getWorksheetIterator() as $worksheet) {
             'id_cliente' => $arr[2]
          ];
 
-         array_push($arr_agregados, $datadd);
+         $date = date('Y-m-d', time());
+
+         $checkDate =  $this->orden->getOrdenesDate($date, $arr[2]);
+
+         if(count($checkDate)){
+            //echo "si existe ".$date."\n";
+         }else{
+            //echo "no existe ";
+            $this->orden->save($datadd);
+         }
+
+         array_push($arr_agregados, $checkDate);
+
+        
+        
+
+         
      }
    
 
@@ -294,6 +312,12 @@ foreach ( $spreadsheet->getWorksheetIterator() as $worksheet) {
 
  }
 
+ public function getOrdenesToday(){
+
+
+   $this->ordenes->getOrdenesToday();
+
+ }
 
 
 }

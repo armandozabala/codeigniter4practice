@@ -40,6 +40,20 @@ class User extends ResourceController
 	}
 
 
+		public function updateRuta(){
+
+					
+			$id_cliente = $this->request->getPost('id_cliente');
+			$ruta = $this->request->getPost('id_ruta');
+
+			$this->cliente->set('id_ruta', $ruta);
+			$this->cliente->where('id_cliente', $id_cliente);
+			$this->cliente->update();
+
+			return $this->respond(['users' => 'update'], 200);
+	}
+
+
 	public function login(){
 
 					 $email = $this->request->getPost('email');
@@ -114,12 +128,29 @@ class User extends ResourceController
  		 return $this->respond($this->cliente->getClientes());
   
 	}
+
+	public function getClientesNoRuta(){
+
+		return $this->respond($this->cliente->getClientesNoRutas());
+
+}
+
 	
 	public function getClientesRutas(){
 
 		$id_ruta = $this->request->getPost('id_ruta');
 
-		return $this->respond($this->cliente->getClientesRutas($id_ruta));
+		if($id_ruta == 0){
+
+			return $this->respond($this->cliente->getClientesRutasAll());
+
+		}else if($id_ruta != 0){
+
+			return $this->respond($this->cliente->getClientesRutas($id_ruta));
+
+		}
+
+	
 
 }
 

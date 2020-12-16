@@ -11,7 +11,7 @@ class ClienteModel extends Model {
 
   protected $returnType = 'array';
   protected $db;
-  protected $allowedFields = [ 'razon_social', 'nit','id_cliente','nombres','apellidos','cedula','direccion','telefono','email','latitud','longitud','hora_desde','hora_hasta','id_ciudad','id_departamento','orden','ruta'];
+  protected $allowedFields = [ 'razon_social', 'nit','id_cliente','nombres','apellidos','cedula','direccion','telefono','email','latitud','longitud','hora_desde','hora_hasta','id_ciudad','id_departamento','orden','ruta','id_ruta'];
 
 
 
@@ -37,11 +37,44 @@ class ClienteModel extends Model {
                                         c.id_ruta,
                                         c.id_ciudad,
                                         c.id_departamento,
-                                        r.ruta FROM clientes c LEFT JOIN rutas r ON c.id_ruta = r.id_ruta');
+                                        r.ruta 
+                                        FROM clientes c 
+                                        LEFT JOIN rutas r ON c.id_ruta = r.id_ruta');
       $results = $query->getResult();
 
       return $results;
 
+  }
+
+
+  public function getClientesRutasAll(){
+
+   $this->db = \Config\Database::connect();
+ 
+   $query = $this->db->query('SELECT c.razon_social,
+                                     c.nit,
+                                     c.id_cliente,
+                                     c.nombres,
+                                     c.apellidos,
+                                     c.cedula,
+                                     c.direccion,
+                                     c.telefono,
+                                     c.email,
+                                     c.latitud,
+                                     c.longitud,
+                                     c.hora_desde,
+                                     c.hora_hasta,
+                                     c.orden,
+                                     c.ruta,
+                                     c.id_ruta,
+                                     c.id_ciudad,
+                                     c.id_departamento,
+                                     r.ruta FROM clientes c LEFT JOIN rutas r ON c.id_ruta = r.id_ruta 
+                                     WHERE c.orden != 0 AND c.id_ruta != 0
+                                     ORDER BY c.orden ASC');
+   $results = $query->getResult();
+
+   return $results;
   }
 
 
@@ -67,11 +100,45 @@ class ClienteModel extends Model {
                                          c.id_ruta,
                                          c.id_ciudad,
                                          c.id_departamento,
-                                         r.ruta FROM clientes c LEFT JOIN rutas r ON c.id_ruta = r.id_ruta
-                                         WHERE c.id_ruta = '.$id_ruta);
+                                         r.ruta 
+                                         FROM clientes c 
+                                         LEFT JOIN rutas r ON c.id_ruta = r.id_ruta
+                                         WHERE c.id_ruta = '.$id_ruta.' AND c.orden != 0 ORDER BY c.orden ASC');
        $results = $query->getResult();
  
        return $results;
  
    }
+
+
+   public function getClientesNoRutas(){
+
+      $this->db = \Config\Database::connect();
+   
+         $query = $this->db->query('SELECT c.razon_social,
+                                           c.nit,
+                                           c.id_cliente,
+                                           c.nombres,
+                                           c.apellidos,
+                                           c.cedula,
+                                           c.direccion,
+                                           c.telefono,
+                                           c.email,
+                                           c.latitud,
+                                           c.longitud,
+                                           c.hora_desde,
+                                           c.hora_hasta,
+                                           c.orden,
+                                           c.ruta,
+                                           c.id_ruta,
+                                           c.id_ciudad,
+                                           c.id_departamento,
+                                           r.ruta FROM clientes c 
+                                           LEFT JOIN rutas r ON c.id_ruta = r.id_ruta
+                                           WHERE c.id_ruta = 0 OR c.orden=0');
+         $results = $query->getResult();
+   
+         return $results;
+   
+     }
 }
