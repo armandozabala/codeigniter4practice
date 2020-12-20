@@ -11,7 +11,7 @@ class ClienteModel extends Model {
 
   protected $returnType = 'array';
   protected $db;
-  protected $allowedFields = [ 'razon_social', 'nit','id_cliente','nombres','apellidos','cedula','direccion','telefono','email','latitud','longitud','hora_desde','hora_hasta','id_ciudad','id_departamento','orden','ruta','id_ruta'];
+  protected $allowedFields = [ 'razon_social', 'establecimiento', 'nit','id_cliente', 'departamento', 'ciudad', 'nombres','apellidos','cedula','direccion', 'direccion_estandar', 'estrato', 'barrio', 'localidad', 'telefono','email','latitud','longitud','hora_desde','hora_hasta','orden','ruta','id_ruta','fecha_ultima_compra'];
 
 
 
@@ -35,8 +35,8 @@ class ClienteModel extends Model {
                                         c.orden,
                                         c.ruta,
                                         c.id_ruta,
-                                        c.id_ciudad,
-                                        c.id_departamento,
+                                        c.ciudad,
+                                        c.departamento,
                                         r.ruta 
                                         FROM clientes c 
                                         LEFT JOIN rutas r ON c.id_ruta = r.id_ruta');
@@ -52,6 +52,7 @@ class ClienteModel extends Model {
    $this->db = \Config\Database::connect();
  
    $query = $this->db->query('SELECT c.razon_social,
+                                     c.establecimiento,
                                      c.nit,
                                      c.id_cliente,
                                      c.nombres,
@@ -67,11 +68,10 @@ class ClienteModel extends Model {
                                      c.orden,
                                      c.ruta,
                                      c.id_ruta,
-                                     c.id_ciudad,
-                                     c.id_departamento,
+                                     c.ciudad,
+                                     c.departamento,
                                      r.ruta FROM clientes c LEFT JOIN rutas r ON c.id_ruta = r.id_ruta 
-                                     WHERE c.orden != 0 AND c.id_ruta != 0
-                                     ORDER BY c.orden ASC');
+                                     ORDER BY c.orden, c.id_cliente ASC'); //WHERE c.orden != 0 AND c.id_ruta != 0
    $results = $query->getResult();
 
    return $results;
@@ -83,6 +83,7 @@ class ClienteModel extends Model {
     $this->db = \Config\Database::connect();
  
        $query = $this->db->query('SELECT c.razon_social,
+                                         c.establecimiento,
                                          c.nit,
                                          c.id_cliente,
                                          c.nombres,
@@ -98,12 +99,12 @@ class ClienteModel extends Model {
                                          c.orden,
                                          c.ruta,
                                          c.id_ruta,
-                                         c.id_ciudad,
-                                         c.id_departamento,
+                                         c.ciudad,
+                                         c.departamento,
                                          r.ruta 
                                          FROM clientes c 
                                          LEFT JOIN rutas r ON c.id_ruta = r.id_ruta
-                                         WHERE c.id_ruta = '.$id_ruta.' AND c.orden != 0 ORDER BY c.orden ASC');
+                                         WHERE c.id_ruta = '.$id_ruta.'  ORDER BY c.orden, c.id_cliente ASC');
        $results = $query->getResult();
  
        return $results;
@@ -116,6 +117,7 @@ class ClienteModel extends Model {
       $this->db = \Config\Database::connect();
    
          $query = $this->db->query('SELECT c.razon_social,
+                                           c.establecimiento,
                                            c.nit,
                                            c.id_cliente,
                                            c.nombres,
@@ -131,8 +133,8 @@ class ClienteModel extends Model {
                                            c.orden,
                                            c.ruta,
                                            c.id_ruta,
-                                           c.id_ciudad,
-                                           c.id_departamento,
+                                           c.ciudad,
+                                           c.departamento,
                                            r.ruta FROM clientes c 
                                            LEFT JOIN rutas r ON c.id_ruta = r.id_ruta
                                            WHERE c.id_ruta = 0 OR c.orden=0');

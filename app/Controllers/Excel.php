@@ -203,6 +203,8 @@ $spreadsheet = $reader->load(WRITEPATH.'/uploads/excel/'.$archivo->getName());
 
 $worksheet = $spreadsheet->getActiveSheet();
 
+
+
  
 
 foreach ( $spreadsheet->getWorksheetIterator() as $worksheet) {
@@ -238,53 +240,65 @@ foreach ( $spreadsheet->getWorksheetIterator() as $worksheet) {
 
     
 
-     $resp = $this->cliente->where('id_cliente',$arr[2])->findAll();
+     $resp = $this->cliente->where('id_cliente',$arr[0])->findAll();
 
     
      if(count($resp) ==  0){
 
-              $resp_coord = $this->geocodeAddress($arr[6]);
+              //$resp_coord = $this->geocodeAddress($arr[6]);
+
+              $var =  $arr[17];
+              
+              $date = str_replace('/', '-', $var);
+
+              $date_end = date('Y-m-d', strtotime($date));
+
+              $this->saveRuta($arr[5]);
+
+              $id_ruta = $this->getRuta($arr[5]);
 
               $data_cell =[
-                'razon_social' => $arr[0],
+                'id_cliente' => $arr[0],
                 'nit' => $arr[1],
-                'id_cliente' => $arr[2],
-                'nombres' => $arr[3],
-                'apellidos' => $arr[4],
-                'cedula' => $arr[5],
+                'cedula' => $arr[2],
+                'razon_social' => $arr[3],
+                'establecimiento' => $arr[4],
+                'ruta' => $arr[5],
                 'direccion' => $arr[6],
-                'telefono' => $arr[7],
-                'email' => $arr[8],
-                'latitud' => $resp_coord['lat'], //$arr[9],
-                'longitud' => $resp_coord['lng'], // $arr[10],
-                'hora_desde' => $arr[11],
-                'hora_hasta' => $arr[12],
-                'id_ciudad' => $arr[13],
-                'id_departamento' => $arr[14],
-                'ruta' => $arr[15]
+                'direccion_estandar' => $arr[7],
+                'barrio' => $arr[9],
+                'localidad' => $arr[11],
+                'ciudad' => $arr[13],
+                'departamento' => $arr[14],
+                'latitud' =>  $arr[15],
+                'longitud' => $arr[16],
+                'fecha_ultima_compra' => $date_end,
+                'id_ruta' => $id_ruta
                ];
 
-            array_push($arr_final, $data_cell);
+           array_push($arr_final, $data_cell);
+
+
 
      }else{
 
          $datadd = [
-            'id_cliente' => $arr[2]
+            'id_cliente' => $arr[0]
          ];
 
          $date = date('Y-m-d', time());
 
-         $checkDate =  $this->orden->getOrdenesDate($date, $arr[2]);
+         $checkDate =  $this->orden->getOrdenesDate($date, $arr[0]);
 
          if(count($checkDate)){
             //echo "si existe ".$date."\n";
          }else{
-            //echo "no existe ";
-            $this->orden->save($datadd);
+ 
+            array_push($arr_agregados, $datadd);
          }
 
-         array_push($arr_agregados, $checkDate);
-
+        
+      
         
         
 
@@ -295,34 +309,23 @@ foreach ( $spreadsheet->getWorksheetIterator() as $worksheet) {
 
   }
 
+
   $res = 0;
 
   if(count($arr_final) > 0)
       $res = $this->cliente->insertBatch($arr_final);
 
-  if( $res == count($arr_final)){
-    return $this->respond(['nuevos' => (object) $arr_final, 'registros' => count($arr_agregados)], 200);
+  if(count($arr_agregados) > 0)
+      $res = $this->orden->insertBatch($arr_agregados);
+
+  if( $res == count($arr_final) || $res == count($arr_agregados)){
+    return $this->respond(['nuevos agregados' =>  count($arr_final), 'ordenes registros' => count($arr_agregados)], 200);
   }else{
     return $this->respond(['message' => 'Error in batch invalido'], 401);
   }
   
 
-}
-
-
- /*$this->excel->setActiveSheetIndex(0);
-  //name the worksheet
-  $this->excel->getActiveSheet()->setTitle('Informe');
-  //set cell A1 content with some text
-  $this->excel->getActiveSheet()->setCellValue('A1','Celda1');
-  $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
-  $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setSize(10);
-  
-  $filename="nombre.xls"; //save our workbook as this file name
-  header('Content-Type: application/vnd.ms-excel'); //mime type
-  header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
-  header('Cache-Control: max-age=0'); //no cache*/
-
+ }
 
 
  }
@@ -334,5 +337,29 @@ foreach ( $spreadsheet->getWorksheetIterator() as $worksheet) {
 
  }
 
+ public function getRuta($ruta){
+
+      $resp = $this->ruta->where('ruta', $ruta)->find();
+
+      return $resp[0]['id_ruta'];
+
+ }
+
+ public function saveRuta($ruta){
+
+
+      $resp = $this->ruta->where('ruta', $ruta)->findAll();
+
+      if(count($resp) ==  0){
+
+          $data_ruta =[
+                'ruta' => $ruta
+          ];
+
+          $this->ruta->save($data_ruta);
+
+      }
+
+ }
 
 }

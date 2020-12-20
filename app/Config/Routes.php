@@ -71,6 +71,7 @@ $routes->post('updateorden', 'User::updateOrden');
 $routes->post('updateruta', 'User::updateRuta');
 $routes->post('clientesxrutas', 'User::getClientesRutas');
 $routes->post('customersnoroutes', 'User::getClientesNoRuta');
+$routes->post('deletecustomer', 'User::deleteCustomer');
 
 
 //rutas

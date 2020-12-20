@@ -150,9 +150,20 @@ class User extends ResourceController
 
 		}
 
-	
+}
+
+
+public function deleteCustomer(){
+
+			$id_cliente = $this->request->getPost('id_cliente');
+
+			$res = $this->cliente->where('id_cliente', $id_cliente)->delete();
+
+			return $this->respond(['message' => 'Borrado'], 200);
 
 }
+
+
 
 
 
