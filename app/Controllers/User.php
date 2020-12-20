@@ -164,6 +164,26 @@ public function deleteCustomer(){
 }
 
 
+public function updateCustomers(){
+
+	$obj=json_decode(file_get_contents('php://input'));
+	$datos = $obj->row;
+
+
+	for($row=0; $row < count($datos); ++$row){
+		$this->cliente->where('id_cliente', $datos[$row]->id_cliente);
+		$this->cliente->update($datos);
+
+	}
+
+	return $this->respond(['message' =>  'update'], 200);
+/*	$res = $this->cliente->updateBatch($datos, 'orden');
+
+	return $this->respond(['message' => 'Actualizado'], 200);*/
+
+}
+
+
 
 
 

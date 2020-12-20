@@ -68,6 +68,7 @@ $routes->post('usuario', 'User::insertar');
 $routes->post('login', 'User::login');
 
 $routes->post('updateorden', 'User::updateOrden');
+$routes->post('updatecustomer', 'User::updateCustomers');
 $routes->post('updateruta', 'User::updateRuta');
 $routes->post('clientesxrutas', 'User::getClientesRutas');
 $routes->post('customersnoroutes', 'User::getClientesNoRuta');
@@ -82,6 +83,7 @@ $routes->post('auth', 'Auth::create');
 
 //ordenes
 $routes->post('ordenestoday', 'Orden::getOrdenesToday');
+$routes->post('deleteorder', 'Orden::deleteOrden');
 
 
 

@@ -37,4 +37,14 @@ class Orden extends ResourceController
 
  }
 
+ public function deleteOrden(){
+
+   $id_orden = $this->request->getPost('id_orden');
+
+   $res = $this->orden->where('id', $id_orden)->delete();
+
+   return $this->respond(['message' => 'Borrado'], 200);
+
+}
+
  }

@@ -319,7 +319,7 @@ foreach ( $spreadsheet->getWorksheetIterator() as $worksheet) {
       $res = $this->orden->insertBatch($arr_agregados);
 
   if( $res == count($arr_final) || $res == count($arr_agregados)){
-    return $this->respond(['nuevos agregados' =>  count($arr_final), 'ordenes registros' => count($arr_agregados)], 200);
+    return $this->respond(['nuevos' =>  count($arr_final), 'clientes' => $arr_final, 'ordenes' => count($arr_agregados)], 200);
   }else{
     return $this->respond(['message' => 'Error in batch invalido'], 401);
   }

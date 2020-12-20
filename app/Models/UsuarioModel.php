@@ -11,7 +11,7 @@ class UsuarioModel extends Model {
 
   protected $returnType = 'array';
   protected $db;
-  protected $allowedFields = [ 'ip_address', 'username', 'password','salt','email','created_on','last_login','active','nombres','apellidos','tipo_documento','cedula','fecha_nacimiento','telefono','direccion','id_departamento','id_ciudad', 'fecha_licencia','foto','id_tipous'];
+  protected $allowedFields = [ 'ip_address',  'username', 'password','salt','email','created_on','last_login','active','nombres','apellidos','tipo_documento','cedula','fecha_nacimiento','telefono','direccion','id_departamento','id_ciudad', 'fecha_licencia','foto','id_tipous'];
 
 
   protected $useTimestamps = true;

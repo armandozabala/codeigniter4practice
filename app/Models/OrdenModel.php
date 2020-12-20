@@ -56,7 +56,8 @@ class OrdenModel extends Model {
                                         c.ciudad,
                                         c.departamento,
                                         o.fecha_creacion,
-                                        r.ruta 
+                                        r.ruta,
+                                        o.id
                                         FROM clientes c 
                                         LEFT JOIN rutas r ON c.id_ruta = r.id_ruta
                                         LEFT JOIN ordenes o ON c.id_cliente = o.id_cliente
