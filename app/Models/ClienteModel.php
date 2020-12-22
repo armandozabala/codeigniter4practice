@@ -34,6 +34,7 @@ class ClienteModel extends Model {
                                         c.hora_hasta,
                                         c.orden,
                                         c.ruta,
+                                        c.id,
                                         c.id_ruta,
                                         c.ciudad,
                                         c.departamento,
@@ -112,7 +113,7 @@ class ClienteModel extends Model {
    }
 
 
-   public function getClientesNoRutas(){
+   public function getClientesNoOrden($id_ruta){
 
       $this->db = \Config\Database::connect();
    
@@ -120,6 +121,7 @@ class ClienteModel extends Model {
                                            c.establecimiento,
                                            c.nit,
                                            c.id_cliente,
+                                           c.id,
                                            c.nombres,
                                            c.apellidos,
                                            c.cedula,
@@ -135,9 +137,46 @@ class ClienteModel extends Model {
                                            c.id_ruta,
                                            c.ciudad,
                                            c.departamento,
-                                           r.ruta FROM clientes c 
+                                           r.ruta 
+                                           FROM clientes c 
                                            LEFT JOIN rutas r ON c.id_ruta = r.id_ruta
-                                           WHERE c.id_ruta = 0 OR c.orden=0');
+                                           WHERE c.id_ruta = '.$id_ruta.' AND c.orden=0');
+         $results = $query->getResult();
+   
+         return $results;
+   
+     }
+
+
+
+     public function getClientesNoRuta(){
+
+      $this->db = \Config\Database::connect();
+   
+         $query = $this->db->query('SELECT c.razon_social,
+                                           c.establecimiento,
+                                           c.nit,
+                                           c.id_cliente,
+                                           c.id,
+                                           c.nombres,
+                                           c.apellidos,
+                                           c.cedula,
+                                           c.direccion,
+                                           c.telefono,
+                                           c.email,
+                                           c.latitud,
+                                           c.longitud,
+                                           c.hora_desde,
+                                           c.hora_hasta,
+                                           c.orden,
+                                           c.ruta,
+                                           c.id_ruta,
+                                           c.ciudad,
+                                           c.departamento,
+                                           r.ruta 
+                                           FROM clientes c 
+                                           LEFT JOIN rutas r ON c.id_ruta = r.id_ruta
+                                           WHERE c.id_ruta = 0 AND c.orden = 0');
          $results = $query->getResult();
    
          return $results;

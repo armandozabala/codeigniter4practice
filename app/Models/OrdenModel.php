@@ -24,7 +24,7 @@ class OrdenModel extends Model {
                                       c.razon_social
                                       FROM ordenes o
                                       LEFT JOIN clientes c ON o.id_cliente = c.id_cliente
-                                      WHERE DATE(o.fecha_creacion) = "'.$fecha.'" AND o.id_cliente = '.$id_cliente);
+                                      WHERE DATE(o.fecha_creacion) = "'.$fecha.'" AND o.id_cliente = '.$id_cliente.' ORDER BY c.orden ASC');
 
     $results = $query->getResult();
 
@@ -61,7 +61,7 @@ class OrdenModel extends Model {
                                         FROM clientes c 
                                         LEFT JOIN rutas r ON c.id_ruta = r.id_ruta
                                         LEFT JOIN ordenes o ON c.id_cliente = o.id_cliente
-                                        WHERE DATE(o.fecha_creacion) = "'.$fecha.'" AND r.id_ruta='.$ruta.'  ORDER BY c.orden ASC');
+                                        WHERE DATE(o.fecha_creacion) = "'.$fecha.'" AND r.id_ruta='.$ruta.' ORDER BY c.orden ASC');
       $results = $query->getResult();
 
       return $results;
@@ -88,6 +88,7 @@ class OrdenModel extends Model {
                                          c.hora_hasta,
                                          c.orden,
                                          c.ruta,
+                                         o.id,
                                          c.id_ruta,
                                          c.ciudad,
                                          c.departamento,
@@ -96,7 +97,7 @@ class OrdenModel extends Model {
                                          FROM clientes c 
                                          LEFT JOIN rutas r ON c.id_ruta = r.id_ruta
                                          LEFT JOIN ordenes o ON c.id_cliente = o.id_cliente
-                                         WHERE DATE(o.fecha_creacion) = "'.$fecha.'" AND c.id_ruta != 0 ORDER BY c.orden ASC');
+                                         WHERE DATE(o.fecha_creacion) = "'.$fecha.'" AND c.id_ruta != 0 ORDER BY c.orden, c.id_cliente ASC');
        $results = $query->getResult();
  
        return $results;

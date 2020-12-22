@@ -129,9 +129,18 @@ class User extends ResourceController
   
 	}
 
-	public function getClientesNoRuta(){
+	public function getClientesNoOrden(){
 
-		return $this->respond($this->cliente->getClientesNoRutas());
+		$id_ruta = $this->request->getPost('id_ruta');
+
+		return $this->respond($this->cliente->getClientesNoOrden($id_ruta));
+
+}
+
+public function getClientesNoRuta(){
+
+
+	return $this->respond($this->cliente->getClientesNoRuta());
 
 }
 
@@ -172,14 +181,14 @@ public function updateCustomers(){
 
 	for($row=0; $row < count($datos); ++$row){
 		$this->cliente->where('id_cliente', $datos[$row]->id_cliente);
-		$this->cliente->update($datos);
-
+		$this->cliente->delete();
+		$this->cliente->replace((array)$datos[$row]);
 	}
 
-	return $this->respond(['message' =>  'update'], 200);
+	///return $this->respond(['message' =>  'update'.(object) $datos[0]], 200);
 /*	$res = $this->cliente->updateBatch($datos, 'orden');
-
-	return $this->respond(['message' => 'Actualizado'], 200);*/
+*/
+	return $this->respond(['message' => 'Actualizado'], 200);
 
 }
 

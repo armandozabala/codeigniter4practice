@@ -47,4 +47,24 @@ class Orden extends ResourceController
 
 }
 
+
+public function deleteAllOrden(){
+
+	$obj=json_decode(file_get_contents('php://input'));
+	$datos = $obj->row;
+
+
+	for($row=0; $row < count($datos); ++$row){
+		$this->orden->where('id', $datos[$row]->id);
+		$this->orden->delete();
+	}
+
+	///return $this->respond(['message' =>  'update'.(object) $datos[0]], 200);
+/*	$res = $this->cliente->updateBatch($datos, 'orden');
+*/
+	return $this->respond(['message' => 'Borrados'], 200);
+
+}
+
+
  }

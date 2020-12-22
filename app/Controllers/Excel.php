@@ -84,13 +84,13 @@ public function exportarExcel(){
 
       $sheet->setCellValue('A1', 'Id');
       $sheet->setCellValue('B1', 'Razon Social');
-      $sheet->setCellValue('C1', 'Nombres');
-      $sheet->setCellValue('D1', 'Apellidos');
-      $sheet->setCellValue('E1', 'Email');
-      $sheet->setCellValue('F1', 'Telefono');
-      $sheet->setCellValue('G1', 'Direccion');
-      $sheet->setCellValue('H1', 'Ruta');
-      $sheet->setCellValue('I1', 'Orden');
+      $sheet->setCellValue('C1', 'Establecimiento');
+      $sheet->setCellValue('D1', 'Direccion');
+      $sheet->setCellValue('E1', 'Ruta');
+      $sheet->setCellValue('F1', 'Orden');
+      $sheet->setCellValue('G1', 'Fecha');
+      /*$sheet->setCellValue('H1', 'Ruta');
+      $sheet->setCellValue('I1', 'Orden');*/
 
       //loop
       for($row=2; $row < count($datos) + 2; ++$row){
@@ -99,37 +99,33 @@ public function exportarExcel(){
 
           $sheet->setCellValue('B'.$row, $datos[$row-2]->razon_social);
   
-          $sheet->setCellValue('C'.$row, $datos[$row-2]->nombres);
-  
-          $sheet->setCellValue('D'.$row, $datos[$row-2]->apellidos);
-  
-          $sheet->setCellValue('E'.$row, $datos[$row-2]->email);
-  
-          $sheet->setCellValue('F'.$row, $datos[$row-2]->telefono);
+          $sheet->setCellValue('C'.$row, $datos[$row-2]->establecimiento);
 
-          $sheet->setCellValue('G'.$row, $datos[$row-2]->direccion);
+          $sheet->setCellValue('D'.$row, $datos[$row-2]->direccion);
 
-          $sheet->setCellValue('H'.$row, $datos[$row-2]->ruta);
+          $sheet->setCellValue('E'.$row, $datos[$row-2]->ruta);
 
-          $sheet->setCellValue('I'.$row, $datos[$row-2]->orden);
+          $sheet->setCellValue('F'.$row, $datos[$row-2]->orden);
+          
+          $sheet->setCellValue('G'.$row, $datos[$row-2]->fecha_creacion);
 
       }
 
 
       $sheet->getColumnDimension('A')->setWidth(10);
       $sheet->getColumnDimension('B')->setWidth(25);
-      $sheet->getColumnDimension('C')->setWidth(15);
-      $sheet->getColumnDimension('D')->setWidth(15);
+      $sheet->getColumnDimension('C')->setWidth(35);
+      $sheet->getColumnDimension('D')->setWidth(30);
       $sheet->getColumnDimension('E')->setWidth(23);
       $sheet->getColumnDimension('F')->setWidth(15);
       $sheet->getColumnDimension('G')->setWidth(30);
-      $sheet->getColumnDimension('H')->setWidth(20);
-      $sheet->getColumnDimension('I')->setWidth(20);
+      /*$sheet->getColumnDimension('H')->setWidth(20);
+      $sheet->getColumnDimension('I')->setWidth(20);*/
 
       //name the worksheet
       $sheet->setTitle('Informe Ordenes');
 
-      $sheet->getStyle('A1:I1')->applyFromArray(
+      $sheet->getStyle('A1:G1')->applyFromArray(
 
         array(
 
