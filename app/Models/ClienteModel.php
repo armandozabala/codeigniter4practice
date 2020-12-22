@@ -148,6 +148,41 @@ class ClienteModel extends Model {
      }
 
 
+     public function getClientesNoOrdenAll(){
+
+      $this->db = \Config\Database::connect();
+   
+         $query = $this->db->query('SELECT c.razon_social,
+                                           c.establecimiento,
+                                           c.nit,
+                                           c.id_cliente,
+                                           c.id,
+                                           c.nombres,
+                                           c.apellidos,
+                                           c.cedula,
+                                           c.direccion,
+                                           c.telefono,
+                                           c.email,
+                                           c.latitud,
+                                           c.longitud,
+                                           c.hora_desde,
+                                           c.hora_hasta,
+                                           c.orden,
+                                           c.ruta,
+                                           c.id_ruta,
+                                           c.ciudad,
+                                           c.departamento,
+                                           r.ruta 
+                                           FROM clientes c 
+                                           LEFT JOIN rutas r ON c.id_ruta = r.id_ruta
+                                           WHERE c.orden=0');
+         $results = $query->getResult();
+   
+         return $results;
+   
+     }
+
+
 
      public function getClientesNoRuta(){
 

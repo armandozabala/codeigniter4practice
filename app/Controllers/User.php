@@ -133,7 +133,17 @@ class User extends ResourceController
 
 		$id_ruta = $this->request->getPost('id_ruta');
 
-		return $this->respond($this->cliente->getClientesNoOrden($id_ruta));
+	
+		if($id_ruta == 0){
+
+			return $this->respond($this->cliente->getClientesNoOrdenAll());
+
+		}else if($id_ruta != 0){
+
+			return $this->respond($this->cliente->getClientesNoOrden($id_ruta));
+
+
+		}
 
 }
 
