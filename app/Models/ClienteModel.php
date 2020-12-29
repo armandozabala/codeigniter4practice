@@ -15,6 +15,7 @@ class ClienteModel extends Model {
 
 
 
+
   public function getClientes(){
 
    $this->db = \Config\Database::connect();
@@ -211,7 +212,7 @@ class ClienteModel extends Model {
                                            r.ruta 
                                            FROM clientes c 
                                            LEFT JOIN rutas r ON c.id_ruta = r.id_ruta
-                                           WHERE c.id_ruta = 0 AND c.orden = 0');
+                                           WHERE c.id_ruta = 0');
          $results = $query->getResult();
    
          return $results;

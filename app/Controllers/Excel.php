@@ -191,11 +191,11 @@ public function uploadExcel(){
 
  $archivo->move(WRITEPATH.'/uploads/excel');
  
-$reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
+/*$reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
 
-$reader->setReadDataOnly(false);
+$reader->setReadDataOnly(false);*/
 
-$spreadsheet = $reader->load(WRITEPATH.'/uploads/excel/'.$archivo->getName());
+$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load(WRITEPATH.'/uploads/excel/'.$archivo->getName()); // $reader->load(WRITEPATH.'/uploads/excel/'.$archivo->getName());
 
 $worksheet = $spreadsheet->getActiveSheet();
 
@@ -224,7 +224,7 @@ foreach ( $spreadsheet->getWorksheetIterator() as $worksheet) {
   
 
      
-    for ($col = 2; $col <= $highestColumnIndex; ++$col) {
+    for ($col = 1; $col <= $highestColumnIndex; ++$col) {
 
            $cell = $worksheet->getCellByColumnAndRow($col, $row)->getFormattedValue();
 
@@ -236,55 +236,56 @@ foreach ( $spreadsheet->getWorksheetIterator() as $worksheet) {
 
     
 
-     $resp = $this->cliente->where('id_cliente',$arr[0])->findAll();
+     $resp = $this->cliente->where('id_cliente',$arr[16])->findAll();
 
-    
+
+   
      if(count($resp) ==  0){
 
               //$resp_coord = $this->geocodeAddress($arr[6]);
 
-              $var =  $arr[17];
+              $var =  $arr[13];
               
               $date = str_replace('/', '-', $var);
 
               $date_end = date('Y-m-d', strtotime($date));
 
-              $this->saveRuta($arr[5]);
+              $this->saveRuta($arr[14]);
 
-              $id_ruta = $this->getRuta($arr[5]);
+              $id_ruta = $this->getRuta($arr[14]);
 
               $data_cell =[
-                'id_cliente' => $arr[0],
-                'nit' => $arr[1],
-                'cedula' => $arr[2],
-                'razon_social' => $arr[3],
-                'establecimiento' => $arr[4],
-                'ruta' => $arr[5],
-                'direccion' => $arr[6],
-                'direccion_estandar' => $arr[7],
-                'barrio' => $arr[9],
-                'localidad' => $arr[11],
-                'ciudad' => $arr[13],
-                'departamento' => $arr[14],
-                'latitud' =>  $arr[15],
-                'longitud' => $arr[16],
+                'id_cliente' => $arr[16],
+                'nit' => 0, //$arr[1],
+                'cedula' => 0, //$arr[2],
+                'razon_social' => $arr[0],
+                'establecimiento' => $arr[10],
+                'ruta' => $arr[14],
+                'direccion' => $arr[1],
+                'direccion_estandar' => $arr[1],
+                'barrio' => '',
+                'localidad' => '',
+                'ciudad' => '', //$arr[13],
+                'departamento' => '', // $arr[14],
+                'latitud' =>  $arr[7],
+                'longitud' => $arr[8],
                 'fecha_ultima_compra' => $date_end,
                 'id_ruta' => $id_ruta
                ];
 
-           array_push($arr_final, $data_cell);
-
+              array_push($arr_final, $data_cell);
+                
 
 
      }else{
 
          $datadd = [
-            'id_cliente' => $arr[0]
+            'id_cliente' => $arr[16]
          ];
 
          $date = date('Y-m-d', time());
 
-         $checkDate =  $this->orden->getOrdenesDate($date, $arr[0]);
+         $checkDate =  $this->orden->getOrdenesDate($date, $arr[16]);
 
          if(count($checkDate)){
             //echo "si existe ".$date."\n";

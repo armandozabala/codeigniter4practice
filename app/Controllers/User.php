@@ -161,6 +161,11 @@ public function getClientesNoRuta(){
 
 		if($id_ruta == 0){
 
+			/* $resp = [
+							"rows" => $this->cliente->getClientesRutasAll(),
+							"total" => $this->cliente->countAll(),
+				];*/
+
 			return $this->respond($this->cliente->getClientesRutasAll());
 
 		}else if($id_ruta != 0){
