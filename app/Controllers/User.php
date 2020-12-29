@@ -154,6 +154,11 @@ public function getClientesNoRuta(){
 
 }
 
+public function getCountCustomer(){
+
+		return $this->respond([ 'total' => $this->cliente->countAll()]);
+
+}
 	
 	public function getClientesRutas(){
 

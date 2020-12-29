@@ -74,6 +74,7 @@ $routes->post('clientesxrutas', 'User::getClientesRutas');
 $routes->post('customersnoorden', 'User::getClientesNoOrden');
 $routes->post('customersnoroute', 'User::getClientesNoRuta');
 $routes->post('deletecustomer', 'User::deleteCustomer');
+$routes->get('totalcustomer', 'User::getCountCustomer');
 
 
 //rutas
