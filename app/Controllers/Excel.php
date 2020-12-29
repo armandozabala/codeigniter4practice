@@ -113,8 +113,8 @@ public function exportarExcel(){
 
 
       $sheet->getColumnDimension('A')->setWidth(10);
-      $sheet->getColumnDimension('B')->setWidth(25);
-      $sheet->getColumnDimension('C')->setWidth(35);
+      $sheet->getColumnDimension('B')->setWidth(40);
+      $sheet->getColumnDimension('C')->setWidth(40);
       $sheet->getColumnDimension('D')->setWidth(30);
       $sheet->getColumnDimension('E')->setWidth(23);
       $sheet->getColumnDimension('F')->setWidth(15);
