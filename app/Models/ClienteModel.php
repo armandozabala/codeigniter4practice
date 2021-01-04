@@ -11,7 +11,7 @@ class ClienteModel extends Model {
 
   protected $returnType = 'array';
   protected $db;
-  protected $allowedFields = [ 'checked', 'razon_social', 'establecimiento', 'nit','id_cliente', 'departamento', 'ciudad', 'nombres','apellidos','cedula','direccion', 'direccion_estandar', 'estrato', 'barrio', 'localidad', 'telefono','email','latitud','longitud','hora_desde','hora_hasta','orden','ruta','id_ruta','fecha_ultima_compra'];
+  protected $allowedFields = [ 'checked', 'razon_social', 'establecimiento', 'nit','id_cliente', 'departamento', 'ciudad', 'nombres','apellidos','cedula','direccion', 'direccion_estandar', 'estrato', 'barrio', 'localidad', 'telefono','email','latitud','longitud','hora_desde','hora_hasta','orden','ruta','id_ruta'];
 
 
 

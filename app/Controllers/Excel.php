@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Controllers;
+
 
 use CodeIgniter\RESTful\ResourceController;
 
@@ -191,8 +193,7 @@ public function uploadExcelCliente(){
   $archivo = $this->request->getFile('excelfile');
 
   $archivo->move(WRITEPATH.'/uploads/excel');
-  
- 
+
  $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load(WRITEPATH.'/uploads/excel/'.$archivo->getName()); // $reader->load(WRITEPATH.'/uploads/excel/'.$archivo->getName());
  
  $worksheet = $spreadsheet->getActiveSheet();
@@ -201,7 +202,7 @@ public function uploadExcelCliente(){
 
  //foreach ( $spreadsheet->getWorksheetIterator() as $worksheet) {
   $worksheetTitle     = $worksheet->getTitle();
-  $highestRow         = $worksheet->getHighestRow(); // e.g. 10
+  $highestRow         = $worksheet->getHighestDataRow(); // e.g. 10 
   $highestColumn      = $worksheet->getHighestColumn(); // e.g 'F'
  
   $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
@@ -217,7 +218,7 @@ public function uploadExcelCliente(){
   for ($row = 2; $row <= $highestRow; ++$row) {
  
      $arr = array();
-   
+     $data_cell = array();
  
       
      for ($col = 1; $col <= $highestColumnIndex; ++$col) {
@@ -233,16 +234,15 @@ public function uploadExcelCliente(){
 
 
     
-     print_r($arr);
-     //return $this->respond(['message' => 'Error in batch invalido'.$arr], 401);
-    
+     
+ 
 
-     //$resp = $this->cliente->where('id_cliente',$arr[1])->findAll();
-
+    $resp = $this->cliente->where('id_cliente',$arr[1])->findAll();
 
 
 
-    /*  if(count($resp) ==  0){
+
+     if(count($resp) ==  0){
  
                //$resp_coord = $this->geocodeAddress($arr[6]);
  
@@ -281,7 +281,7 @@ public function uploadExcelCliente(){
     
               
  
-      }else{
+     }/*else{
 
         $datadd = [
            'id_cliente' => $arr[1]
@@ -309,22 +309,18 @@ public function uploadExcelCliente(){
  
    }
  
- 
 
-
-   /*$res = 0;
+   $res = 0;
  
    if(count($arr_final) > 0)
        $res = $this->cliente->insertBatch($arr_final);
 
-    if(count($arr_agregados) > 0)
-      $res = $this->orden->insertBatch($arr_agregados);
 
     if( $res == count($arr_final) || $res == count($arr_agregados)){
     return $this->respond(['nuevos' =>  count($arr_final), 'clientes' => $arr_final, 'ordenes' => count($arr_agregados)], 200);
     }else{
     return $this->respond(['message' => 'Error in batch invalido'], 401);
-    }*/
+    }
    
 
 
@@ -418,7 +414,6 @@ foreach ( $spreadsheet->getWorksheetIterator() as $worksheet) {
                 'departamento' => '', // $arr[14],
                 'latitud' =>  $arr[7],
                 'longitud' => $arr[8],
-                'fecha_ultima_compra' => $date_end,
                 'id_ruta' => $id_ruta
                ];
 
@@ -456,11 +451,13 @@ foreach ( $spreadsheet->getWorksheetIterator() as $worksheet) {
   }
 
 
+   
   $res = 0;
 
   if(count($arr_final) > 0)
       $res = $this->cliente->insertBatch($arr_final);
 
+ 
   if(count($arr_agregados) > 0)
       $res = $this->orden->insertBatch($arr_agregados);
 

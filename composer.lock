@@ -7,6 +7,60 @@
     "content-hash": "f0c44509c5ccce344b284d65f752a683",
     "packages": [
         {
+            "name": "ezyang/htmlpurifier",
+            "version": "v4.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ezyang/htmlpurifier.git",
+                "reference": "08e27c97e4c6ed02f37c5b2b20488046c8d90d75"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/08e27c97e4c6ed02f37c5b2b20488046c8d90d75",
+                "reference": "08e27c97e4c6ed02f37c5b2b20488046c8d90d75",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2"
+            },
+            "require-dev": {
+                "simpletest/simpletest": "dev-master#72de02a7b80c6bb8864ef9bf66d41d2f58f826bd"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "HTMLPurifier": "library/"
+                },
+                "files": [
+                    "library/HTMLPurifier.composer.php"
+                ],
+                "exclude-from-classmap": [
+                    "/library/HTMLPurifier/Language/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Edward Z. Yang",
+                    "email": "admin@htmlpurifier.org",
+                    "homepage": "http://ezyang.com"
+                }
+            ],
+            "description": "Standards compliant HTML filter written in PHP",
+            "homepage": "http://htmlpurifier.org/",
+            "keywords": [
+                "html"
+            ],
+            "support": {
+                "issues": "https://github.com/ezyang/htmlpurifier/issues",
+                "source": "https://github.com/ezyang/htmlpurifier/tree/master"
+            },
+            "time": "2020-06-29T00:56:53+00:00"
+        },
+        {
             "name": "firebase/php-jwt",
             "version": "v5.2.0",
             "source": {
@@ -563,16 +617,16 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "1.15.0",
+            "version": "1.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "a8e8068b31b8119e1daa5b1eb5715a3a8ea8305f"
+                "reference": "76d4323b85129d0c368149c831a07a3e258b2b50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/a8e8068b31b8119e1daa5b1eb5715a3a8ea8305f",
-                "reference": "a8e8068b31b8119e1daa5b1eb5715a3a8ea8305f",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/76d4323b85129d0c368149c831a07a3e258b2b50",
+                "reference": "76d4323b85129d0c368149c831a07a3e258b2b50",
                 "shasum": ""
             },
             "require": {
@@ -589,10 +643,11 @@
                 "ext-xmlwriter": "*",
                 "ext-zip": "*",
                 "ext-zlib": "*",
+                "ezyang/htmlpurifier": "^4.13",
                 "maennchen/zipstream-php": "^2.1",
-                "markbaker/complex": "^1.5|^2.0",
-                "markbaker/matrix": "^1.2|^2.0",
-                "php": "^7.2|^8.0",
+                "markbaker/complex": "^1.5||^2.0",
+                "markbaker/matrix": "^1.2||^2.0",
+                "php": "^7.2||^8.0",
                 "psr/http-client": "^1.0",
                 "psr/http-factory": "^1.0",
                 "psr/simple-cache": "^1.0"
@@ -603,7 +658,7 @@
                 "jpgraph/jpgraph": "^4.0",
                 "mpdf/mpdf": "^8.0",
                 "phpcompatibility/php-compatibility": "^9.3",
-                "phpunit/phpunit": "^8.5|^9.3",
+                "phpunit/phpunit": "^8.5||^9.3",
                 "squizlabs/php_codesniffer": "^3.5",
                 "tecnickcom/tcpdf": "^6.3"
             },
@@ -657,9 +712,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.15.0"
+                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.16.1"
             },
-            "time": "2020-10-11T13:20:59+00:00"
+            "time": "2020-12-31T18:03:49+00:00"
         },
         {
             "name": "psr/http-client",
@@ -1118,12 +1173,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "ac73e5287024f5e98dd6d0bf10e6a6f7877b7513"
+                "reference": "5ffe7db6c80f441f150fc88008d64e64af66634b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/ac73e5287024f5e98dd6d0bf10e6a6f7877b7513",
-                "reference": "ac73e5287024f5e98dd6d0bf10e6a6f7877b7513",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/5ffe7db6c80f441f150fc88008d64e64af66634b",
+                "reference": "5ffe7db6c80f441f150fc88008d64e64af66634b",
                 "shasum": ""
             },
             "require": {
@@ -1166,7 +1221,7 @@
                 "source": "https://github.com/fzaninotto/Faker/tree/master"
             },
             "abandoned": true,
-            "time": "2020-10-27T14:15:58+00:00"
+            "time": "2020-12-11T09:59:14+00:00"
         },
         {
             "name": "mikey179/vfsstream",
@@ -1339,16 +1394,16 @@
         },
         {
             "name": "phar-io/version",
-            "version": "3.0.3",
+            "version": "3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phar-io/version.git",
-                "reference": "726c026815142e4f8677b7cb7f2249c9ffb7ecae"
+                "reference": "e4782611070e50613683d2b9a57730e9a3ba5451"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/version/zipball/726c026815142e4f8677b7cb7f2249c9ffb7ecae",
-                "reference": "726c026815142e4f8677b7cb7f2249c9ffb7ecae",
+                "url": "https://api.github.com/repos/phar-io/version/zipball/e4782611070e50613683d2b9a57730e9a3ba5451",
+                "reference": "e4782611070e50613683d2b9a57730e9a3ba5451",
                 "shasum": ""
             },
             "require": {
@@ -1384,9 +1439,9 @@
             "description": "Library for handling version information and constraints",
             "support": {
                 "issues": "https://github.com/phar-io/version/issues",
-                "source": "https://github.com/phar-io/version/tree/3.0.3"
+                "source": "https://github.com/phar-io/version/tree/3.0.4"
             },
-            "time": "2020-11-30T09:21:21+00:00"
+            "time": "2020-12-13T23:18:30+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -1548,16 +1603,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.12.1",
+            "version": "1.12.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "8ce87516be71aae9b956f81906aaf0338e0d8a2d"
+                "reference": "245710e971a030f42e08f4912863805570f23d39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/8ce87516be71aae9b956f81906aaf0338e0d8a2d",
-                "reference": "8ce87516be71aae9b956f81906aaf0338e0d8a2d",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/245710e971a030f42e08f4912863805570f23d39",
+                "reference": "245710e971a030f42e08f4912863805570f23d39",
                 "shasum": ""
             },
             "require": {
@@ -1569,7 +1624,7 @@
             },
             "require-dev": {
                 "phpspec/phpspec": "^6.0",
-                "phpunit/phpunit": "^8.0 || ^9.0 <9.3"
+                "phpunit/phpunit": "^8.0 || ^9.0"
             },
             "type": "library",
             "extra": {
@@ -1609,9 +1664,9 @@
             ],
             "support": {
                 "issues": "https://github.com/phpspec/prophecy/issues",
-                "source": "https://github.com/phpspec/prophecy/tree/1.12.1"
+                "source": "https://github.com/phpspec/prophecy/tree/1.12.2"
             },
-            "time": "2020-09-29T09:10:42+00:00"
+            "time": "2020-12-19T10:15:11+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
